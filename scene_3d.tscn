@@ -1,0 +1,123 @@
+[gd_scene load_steps=23 format=3 uid="uid://dfnpixmwdelfr"]
+
+[ext_resource type="Texture2D" uid="uid://cs4go61h50pt7" path="res://terrain/textures/Bricks090_1K-JPG/Bricks090_1K-JPG_Color.jpg" id="1_uo305"]
+[ext_resource type="PackedScene" uid="uid://bytxhcxjbr03f" path="res://robert.tscn" id="2_gjvar"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="2_j4uev"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="3_7oagn"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="4_kef2n"]
+[ext_resource type="Texture2D" uid="uid://bb8ft2cp6pjsg" path="res://terrain/textures/Grass001_1K-JPG/Grass001_1K-JPG_Color.jpg" id="5_3yo04"]
+[ext_resource type="Texture2D" uid="uid://bsj8qt46ey55i" path="res://terrain/textures/Snow010A_1K-JPG/Snow010A_1K-JPG_Color.jpg" id="6_7pjxf"]
+[ext_resource type="Texture2D" uid="uid://demjcxcx1bolw" path="res://terrain/textures/Grass001_1K-JPG/Grass001_1K-JPG_NormalGL.jpg" id="7_nwbrk"]
+[ext_resource type="Texture2D" uid="uid://bxie7s0ood6p5" path="res://terrain/textures/Snow010A_1K-JPG/Snow010A_1K-JPG_NormalGL.jpg" id="8_w4o8x"]
+[ext_resource type="PackedScene" uid="uid://l0wj5e7alp6f" path="res://robert_hater.tscn" id="10_cj3ku"]
+[ext_resource type="PackedScene" uid="uid://dw35544virtex" path="res://robert_hud_3d.tscn" id="11_81jpr"]
+[ext_resource type="PackedScene" uid="uid://co5yi2jjfqjhc" path="res://goal.tscn" id="12_wdsyg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h32c5"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_energy_multiplier = 1.1
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ntq0e"]
+sky_material = SubResource("ProceduralSkyMaterial_h32c5")
+
+[sub_resource type="Environment" id="Environment_2q8y6"]
+background_mode = 2
+sky = SubResource("Sky_ntq0e")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e6x5r"]
+albedo_color = Color(0.168627, 0.556863, 0.341176, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_q3jbl"]
+material = SubResource("StandardMaterial3D_e6x5r")
+size = Vector2(500, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jr346"]
+albedo_texture = ExtResource("1_uo305")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7sc05"]
+albedo_texture = ExtResource("1_uo305")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vg3my"]
+albedo_texture = ExtResource("1_uo305")
+
+[sub_resource type="Resource" id="Resource_4ksmw"]
+script = ExtResource("4_kef2n")
+mode = 0
+textures = [[ExtResource("5_3yo04"), ExtResource("6_7pjxf")], [ExtResource("7_nwbrk"), ExtResource("8_w4o8x")]]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_3o5l1"]
+agent_height = 2.0
+
+[node name="Scene3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2q8y6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 3843.74, 0)
+shadow_enabled = true
+shadow_bias = 10.0
+shadow_normal_bias = 10.0
+shadow_blur = 10.0
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -71.7403, -14.9806, 8.73653)
+visible = false
+use_collision = true
+mesh = SubResource("PlaneMesh_q3jbl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.777, 12.3093, -30.0189)
+material_override = SubResource("StandardMaterial3D_jr346")
+use_collision = true
+size = Vector3(38.386, 27.706, 30.2506)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.777, 37.0781, 3.90867)
+material_override = SubResource("StandardMaterial3D_7sc05")
+use_collision = true
+size = Vector3(38.386, 27.706, 30.2506)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.7376, 62.0156, 41.2192)
+material_override = SubResource("StandardMaterial3D_vg3my")
+use_collision = true
+size = Vector3(38.386, 27.706, 30.2506)
+
+[node name="Robert" parent="." instance=ExtResource("2_gjvar")]
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("2_j4uev")
+centered = true
+_terrain_data = ExtResource("3_7oagn")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_4ksmw")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_3o5l1")
+
+[node name="Robert_Hater" parent="." instance=ExtResource("10_cj3ku")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -0.0367041, 3.92032, 0.139721)
+
+[node name="RobertHud3D" parent="." instance=ExtResource("11_81jpr")]
+
+[node name="Robert_Hater2" parent="." instance=ExtResource("10_cj3ku")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0.0110052, 4.04361, 4.29429)
+
+[node name="Goal" parent="." instance=ExtResource("12_wdsyg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101, 20, -214)
+next_level = "scene_3d_2"

@@ -1,0 +1,173 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7x32sjmutjge"]
+
+[ext_resource type="PackedScene" uid="uid://c7ou7jacdem7x" path="res://city_scene_tokyo.tscn" id="1_odqwa"]
+[ext_resource type="PackedScene" uid="uid://bl3gp1gxk8hbs" path="res://models/char_with_anim.glb" id="2_ow800"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gc6t7"]
+sky_top_color = Color(0.247059, 0.423529, 0.815686, 1)
+sky_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+sky_energy_multiplier = 1.05
+ground_bottom_color = Color(0.105882, 0.203922, 0.0980392, 1)
+ground_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+
+[sub_resource type="Sky" id="Sky_pxoid"]
+sky_material = SubResource("ProceduralSkyMaterial_gc6t7")
+
+[sub_resource type="Environment" id="Environment_f3oo0"]
+background_mode = 2
+sky = SubResource("Sky_pxoid")
+tonemap_mode = 2
+
+[sub_resource type="Animation" id="Animation_635am"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(12.3117, 3.72005, 3.55584)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.942478, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5a46p"]
+resource_name = "cutscene1"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4.1, 5.2, 6.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(12.3117, 3.72005, 3.55584), Vector3(10.6615, 6.11911, 2.00639), Vector3(-5.74654, 0.482976, -3.40662), Vector3(-5.74654, 0.482976, -3.40662), Vector3(-5.74654, 0.482976, -3.40662)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 3, 4.1, 5.2, 6.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.942478, 0), Vector3(0, 0.942478, 0), Vector3(0, 0.942478, 0), Vector3(0, 0.942478, 0), Vector3(0, 0.654498, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "animation"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("char_with_anim/AnimationPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": PackedStringArray("[stop]", "[stop]", "SambaDancing", "SambaDancing"),
+"times": PackedFloat32Array(0.1, 6.8, 7.3, 165.4)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ntyw5"]
+_data = {
+"RESET": SubResource("Animation_635am"),
+"cutscene1": SubResource("Animation_5a46p")
+}
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_f3oo0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.952941, 0.756863, 0.113725, 1)
+shadow_enabled = true
+
+[node name="city_scene_tokyo" parent="." instance=ExtResource("1_odqwa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.39798, 0, -7.0345)
+
+[node name="char_with_anim" parent="." instance=ExtResource("2_ow800")]
+transform = Transform3D(0.004, 0, 0, 0, 0.004, 0, 0, 0, 0.004, -5.89363, 0.494935, -4.72426)
+
+[node name="Skeleton3D" parent="char_with_anim/Node2" index="0"]
+bones/0/position = Vector3(6.67779, 89.3685, 9.29311)
+bones/0/rotation = Quaternion(-0.075579, 0.00774859, -0.0202136, 0.996905)
+bones/2/rotation = Quaternion(0.0452006, -0.0326899, -0.0239399, 0.998156)
+bones/4/rotation = Quaternion(-0.00263428, -0.00704729, 0.0173136, 0.999822)
+bones/6/rotation = Quaternion(0.0501278, -0.00573388, 0.0185606, 0.998554)
+bones/8/rotation = Quaternion(0.479637, 0.52145, -0.422544, 0.565239)
+bones/10/rotation = Quaternion(-0.148348, 0.0105331, 0.155874, 0.976517)
+bones/12/rotation = Quaternion(8.07925e-07, 2.01421e-08, 0.340591, 0.940212)
+bones/14/rotation = Quaternion(-0.205223, 0.231786, -0.0441732, 0.949846)
+bones/16/rotation = Quaternion(0.0306584, 0.0826798, 0.170486, 0.981406)
+bones/18/rotation = Quaternion(0.0106281, -0.0111181, -0.110302, 0.993779)
+bones/20/rotation = Quaternion(-0.0210724, -0.00704731, -0.0378843, 0.999035)
+bones/24/rotation = Quaternion(-0.138906, -3.14449e-08, 0.0167244, 0.990164)
+bones/26/rotation = Quaternion(0.0032438, -1.95726e-08, -0.000390695, 0.999995)
+bones/28/rotation = Quaternion(0.0148041, 9.98596e-09, -0.00178246, 0.999889)
+bones/32/rotation = Quaternion(-0.155831, -1.06596e-07, 0.0187622, 0.987605)
+bones/34/rotation = Quaternion(-5.58136e-08, 2.99401e-08, -4.07077e-07, 1)
+bones/36/rotation = Quaternion(-0.0168745, -6.01509e-08, 0.0020315, 0.999855)
+bones/40/rotation = Quaternion(-0.118661, -1.44895e-07, 0.0142875, 0.992832)
+bones/42/rotation = Quaternion(0.0080928, -9.97303e-09, -0.000974418, 0.999966)
+bones/44/rotation = Quaternion(0.0549474, 7.33311e-08, -0.00661613, 0.998467)
+bones/48/rotation = Quaternion(-0.107569, -0.00370655, -0.0227626, 0.99393)
+bones/50/rotation = Quaternion(0.0199589, 0.000557536, 0.0335019, 0.999239)
+bones/52/rotation = Quaternion(0.0849163, 4.06552e-08, -0.0102238, 0.996336)
+bones/56/rotation = Quaternion(-0.0312978, 0.00320828, -0.0177776, 0.999347)
+bones/58/rotation = Quaternion(-0.0132802, -0.0177164, 0.0660682, 0.997569)
+bones/66/rotation = Quaternion(0.475584, -0.525315, 0.434512, 0.555935)
+bones/68/rotation = Quaternion(0.0027588, 0.176228, -0.134704, 0.975085)
+bones/70/rotation = Quaternion(1.30407e-06, 5.54163e-08, -0.603192, 0.797596)
+bones/72/rotation = Quaternion(-0.227198, -0.127131, -0.0436862, 0.964526)
+bones/74/rotation = Quaternion(0.0138925, -0.113984, -0.273202, 0.955079)
+bones/76/rotation = Quaternion(0.0164414, 0.00990204, 0.113684, 0.993331)
+bones/78/rotation = Quaternion(-0.0220888, 0.0251133, 0.0763617, 0.996519)
+bones/82/rotation = Quaternion(-0.00875775, 3.3867e-08, -0.00106408, 0.999961)
+bones/84/rotation = Quaternion(0.0788403, -2.4181e-08, 0.00958225, 0.996841)
+bones/86/rotation = Quaternion(0.119311, 6.68214e-09, 0.0145008, 0.992751)
+bones/90/rotation = Quaternion(0.0260508, 3.99898e-08, 0.0031664, 0.999656)
+bones/92/rotation = Quaternion(0.108524, -4.77883e-09, 0.0131898, 0.994006)
+bones/94/rotation = Quaternion(0.144921, -3.51009e-08, 0.017613, 0.989286)
+bones/98/rotation = Quaternion(0.0694392, -3.38357e-08, 0.00843932, 0.99755)
+bones/100/rotation = Quaternion(0.146314, 2.92273e-08, 0.0177828, 0.989078)
+bones/102/rotation = Quaternion(0.17605, 4.19502e-08, 0.021397, 0.984149)
+bones/106/rotation = Quaternion(0.104746, 1.01843e-08, 0.012731, 0.994417)
+bones/108/rotation = Quaternion(0.175881, 6.45676e-10, 0.0213759, 0.984179)
+bones/110/rotation = Quaternion(0.200558, -7.65029e-09, 0.0243755, 0.979378)
+bones/114/rotation = Quaternion(0.0633918, 0.133279, 0.97405, -0.171593)
+bones/116/rotation = Quaternion(-0.35576, 0.0782945, 0.0238102, 0.930987)
+bones/118/rotation = Quaternion(0.48017, -0.0226527, -0.137026, 0.866111)
+bones/120/rotation = Quaternion(0.446816, 0.0231881, 0.00595403, 0.894305)
+bones/124/rotation = Quaternion(0.0268912, 0.122424, 0.990485, 0.056827)
+bones/126/rotation = Quaternion(-0.358924, 0.0705386, 0.0136588, 0.930597)
+bones/128/rotation = Quaternion(0.547006, 0.00419544, 0.0856821, 0.832722)
+bones/130/rotation = Quaternion(0.370962, -0.0179036, -0.00549371, 0.928459)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.587785, 0, 0.809017, 0, 1, 0, -0.809017, 0, 0.587785, 12.3117, 3.72005, 3.55584)
+fov = 84.9833
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "cutscene1"
+libraries = {
+"": SubResource("AnimationLibrary_ntyw5")
+}
+
+[editable path="char_with_anim"]

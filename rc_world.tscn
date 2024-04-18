@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://fxqikehy05h0"]
+
+[ext_resource type="PackedScene" uid="uid://dayy5gypihxsj" path="res://rc_player.tscn" id="1_xmsod"]
+[ext_resource type="MeshLibrary" uid="uid://e1vy5loa0bo0" path="res://assets/road-tiles.tres" id="2_vpnjj"]
+[ext_resource type="PackedScene" uid="uid://co5yi2jjfqjhc" path="res://goal.tscn" id="3_3kpxk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j86bm"]
+sky_top_color = Color(0.247059, 0.423529, 0.815686, 1)
+sky_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+sky_energy_multiplier = 1.05
+ground_bottom_color = Color(0.105882, 0.203922, 0.0980392, 1)
+ground_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+
+[sub_resource type="Sky" id="Sky_ow0e7"]
+sky_material = SubResource("ProceduralSkyMaterial_j86bm")
+
+[sub_resource type="Environment" id="Environment_uqtaa"]
+background_mode = 2
+sky = SubResource("Sky_ow0e7")
+tonemap_mode = 2
+
+[node name="rc_world" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uqtaa")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.952941, 0.756863, 0.113725, 1)
+shadow_enabled = true
+
+[node name="race" parent="." groups=["HUD", "Player"] instance=ExtResource("1_xmsod")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -165.847, 2.22103, 9.07008)
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0)
+mesh_library = ExtResource("2_vpnjj")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(65517, 65535, 1441992, 65517, 65534, 1441996, 65517, 65533, 1441996, 65517, 65532, 1441996, 65517, 65531, 1441997, 65518, 65528, 1441995, 65518, 65527, 1441995, 65518, 65526, 1441978, 65521, 65524, 655563, 65522, 65524, 655563, 65523, 65524, 655563, 65524, 65524, 655563, 65525, 65524, 655563, 65526, 65524, 655563, 65527, 65524, 655563, 65528, 65524, 655563, 65529, 65524, 655563, 65530, 65524, 655563, 65531, 65524, 655563, 65532, 65524, 655546, 65534, 65527, 1048769, 65534, 65528, 1048769, 65534, 65529, 1048769, 65534, 65530, 1048769, 65534, 65531, 1048769, 65534, 65532, 1048769, 65534, 65533, 1048769, 65534, 65534, 1048769, 65534, 65535, 1048769, 65534, 0, 1048769, 65534, 1, 1048769, 65534, 2, 1048769, 65534, 3, 1048769, 65534, 4, 1048769, 65534, 5, 1048769, 65534, 6, 1048762, 65529, 8, 655565, 65528, 8, 655564, 65527, 8, 655564, 65526, 8, 655564, 65525, 8, 655564, 65524, 8, 655564, 65523, 8, 655564, 65522, 8, 655564, 65521, 8, 655564, 65517, 0, 1048780, 65517, 1, 1048780, 65517, 3, 1048780, 65517, 4, 1048780, 65520, 8, 189, 65517, 2, 1441994)
+}
+
+[node name="Goal" parent="." instance=ExtResource("3_3kpxk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -166.513, 9.81368, 31.1435)
+next_level = "rc_world_2"

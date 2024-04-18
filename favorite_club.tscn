@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://drdobbx563quo"]
+
+[ext_resource type="Script" path="res://FavoriteClub.gd" id="1_8arw5"]
+
+[sub_resource type="Theme" id="Theme_h178a"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_uto4o"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_aan87"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_il7ny"]
+default_font_size = 30
+
+[node name="FavoriteClub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8arw5")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 58.0
+offset_right = 889.0
+offset_bottom = 265.0
+theme = SubResource("Theme_h178a")
+text = "-"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="btnShow" type="Button" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 464.0
+offset_right = 306.0
+offset_bottom = 578.0
+theme = SubResource("Theme_uto4o")
+text = "Show"
+
+[node name="btnClear" type="Button" parent="."]
+layout_mode = 0
+offset_left = 337.0
+offset_top = 470.0
+offset_right = 535.0
+offset_bottom = 574.0
+theme = SubResource("Theme_aan87")
+text = "Clear"
+
+[node name="btnExit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 589.0
+offset_top = 467.0
+offset_right = -333.0
+offset_bottom = -76.0
+theme = SubResource("Theme_il7ny")
+text = "Exit"
+
+[connection signal="pressed" from="btnShow" to="." method="_on_btn_show_pressed"]
+[connection signal="pressed" from="btnClear" to="." method="_on_btn_clear_pressed"]
+[connection signal="pressed" from="btnExit" to="." method="_on_btn_exit_pressed"]

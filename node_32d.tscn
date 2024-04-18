@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cw5cnsw4dn4um"]
+
+[ext_resource type="PackedScene" uid="uid://bl3gp1gxk8hbs" path="res://models/char_with_anim.glb" id="1_7g1mg"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="char_with_anim" parent="." instance=ExtResource("1_7g1mg")]
+transform = Transform3D(0.005, 0, 0, 0, 0.005, 0, 0, 0, 0.005, -6.40484, 0.512843, -5.3137)

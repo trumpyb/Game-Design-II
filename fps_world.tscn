@@ -1,0 +1,83 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4m4yf7w4wb68"]
+
+[ext_resource type="PackedScene" uid="uid://bl53qrkjmdqv3" path="res://de_dust_2_with_real_light.tscn" id="1_t57u7"]
+[ext_resource type="PackedScene" uid="uid://dfgflh2h0yd7m" path="res://fps_enemy_template.tscn" id="2_hrkb2"]
+[ext_resource type="PackedScene" uid="uid://beeyeenq2byet" path="res://fps_player_template.tscn" id="3_bblk1"]
+[ext_resource type="PackedScene" uid="uid://co5yi2jjfqjhc" path="res://goal.tscn" id="4_8r57g"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wv0f7"]
+sky_top_color = Color(0.247059, 0.423529, 0.815686, 1)
+sky_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+sky_energy_multiplier = 1.05
+ground_bottom_color = Color(0.105882, 0.203922, 0.0980392, 1)
+ground_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+
+[sub_resource type="Sky" id="Sky_5wtrt"]
+sky_material = SubResource("ProceduralSkyMaterial_wv0f7")
+
+[sub_resource type="Environment" id="Environment_8fypi"]
+background_mode = 2
+sky = SubResource("Sky_5wtrt")
+tonemap_mode = 2
+
+[node name="fps_world" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8fypi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.952941, 0.756863, 0.113725, 1)
+shadow_enabled = true
+
+[node name="de_dust_2_with_real_light" parent="." instance=ExtResource("1_t57u7")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, -2.29131, 0, -1.37887)
+
+[node name="fps_enemy" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6558, 1.14114, 8.96759)
+
+[node name="fps_player" parent="." instance=ExtResource("3_bblk1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.55641, 7.01865, 10.0309)
+
+[node name="Goal" parent="." instance=ExtResource("4_8r57g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.1545, -1.27486, -87.4262)
+next_level = "fps_world_2"
+
+[node name="fps_enemy2" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.9776, 1.8559, -34.1696)
+
+[node name="fps_enemy3" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.8009, 1.06159, -10.0022)
+
+[node name="fps_enemy4" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.7349, 4.91252, 20.4703)
+
+[node name="fps_enemy5" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.53948, 0.982963, -8.95242)
+
+[node name="fps_enemy6" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4972, 1.24084, -21.633)
+
+[node name="fps_enemy7" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.76719, 4.15467, -56.8892)
+
+[node name="fps_enemy8" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.1336, 4.233, -76.6532)
+
+[node name="fps_enemy9" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.7725, -0.89889, -70.35)
+
+[node name="fps_enemy10" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.2359, 2.01412, -75.8612)
+
+[node name="fps_enemy11" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.2203, 1.84055, -76.1891)
+
+[node name="fps_enemy12" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.1761, 1.60924, -64.8488)
+
+[node name="fps_enemy13" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.0098, 1.9251, -62.3154)
+
+[node name="fps_enemy14" parent="." instance=ExtResource("2_hrkb2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.6454, 6.14801, 2.79475)

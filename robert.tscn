@@ -1,0 +1,220 @@
+[gd_scene load_steps=6 format=3 uid="uid://bytxhcxjbr03f"]
+
+[ext_resource type="PackedScene" uid="uid://c8ahabxdennt3" path="res://models/gobot.glb" id="1_3mjd6"]
+
+[sub_resource type="GDScript" id="GDScript_v1fa7"]
+script/source = "extends CharacterBody3D
+
+const walk = 10.0
+const sprint = 17.0
+var SPEED = walk
+
+const JUMP_VELOCITY = 25
+
+var PUSH_FORCE = 25.0
+
+
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+const camSense = .03
+@onready var camera = $Head/Camera3D
+@onready var camera_arm = $SpringArm3D
+@onready var camera_pos = camera.position
+
+@onready var base_fov = camera.fov
+var fov_change = 1.0 
+
+var first_person = true
+
+@onready var model = $gobot
+@onready var animator = $gobot/AnimationPlayer
+
+const BOB_FREQ = 2.4
+const BOB_AMP = .08
+var t_bob = 0.0
+
+var max_health = 50
+var health = max_health
+var damage_lock = 0.0
+var inertia = Vector3.ZERO
+
+var damage_shader = preload(\"res://assets/shaders/take_damage.tres\")
+@onready var HUD = get_tree().get_first_node_in_group(\"HUD\")
+
+func _physics_process(delta):
+	# Add the gravity.
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+
+	# Handle Jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		
+	if Input.is_action_pressed(\"sprint\"):
+		SPEED = sprint
+		fov_change = 2.0
+	else:
+		SPEED = walk
+		fov_change = 1.0
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if direction:
+		if SPEED == walk:
+			animator.play(\"Walk\")
+		else:
+			animator.play(\"Run\")
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		animator.play(\"Idle\")
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+	
+	if Input.is_action_just_pressed(\"ui_cancel\"):
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	if Input.is_action_just_pressed(\"change_camera\"):
+		toggle_camera() #V
+	
+	var rotate_dir = Input.get_vector(\"rot_left\", \"rot_right\", \"rot_up\", \"rot_down\").normalized()
+	
+	if rotate_dir:
+		self.rotation.x += rotate_dir.x / 100.0
+		self.rotation.z += rotate_dir.y / 100.0
+		
+	var velocity_clamped = clamp(velocity.length(), .5, SPEED*2)
+	var target_fov = base_fov + fov_change * velocity_clamped
+	camera.fov = lerp(camera.fov, target_fov, delta*8.0)
+	
+	t_bob += delta * velocity.length() * float(is_on_floor())
+	camera.transform.origin = headBob(t_bob)
+	
+	for enemy in get_tree().get_nodes_in_group(\"enemy\"):
+		if $feet.overlaps_area(enemy.damage_area):
+			enemy.queue_free()
+	damage_lock = max(damage_lock - delta, 0.0)
+	velocity += inertia
+	inertia = inertia.move_toward(Vector3(), delta*1000)
+	
+	if damage_lock == 0:
+		HUD.DAMAGE_OVERLAY.material = null
+	HUD.HEALTH_BAR.max_value = max_health
+	HUD.HEALTH_BAR.value = int(health)
+	
+	for i in range(get_slide_collision_count()):
+		var c = get_slide_collision(i)
+		var col = c.get_collider()
+		if col is RigidBody3D and is_on_floor():
+			col.apply_central_force(-c.get_normal() * PUSH_FORCE)
+			# col.apply_central_impulse(-c.get_normal() * PUSH_FORCE)
+	
+	move_and_slide()
+	
+	if self.global_position.y <= -50:
+		take_damage(.31)
+	
+func take_damage(damage):
+	if damage_lock == 0.0:
+		damage_lock = 0.5
+		health -= damage
+		
+		var damage_intensity = clamp(1.0-((health+.01)/max_health),.1,.8)
+		HUD.DAMAGE_OVERLAY.material = damage_shader.duplicate()
+		HUD.DAMAGE_OVERLAY.material.set_shader_parameter(\"intensity\",damage_intensity)
+		
+		if health <=0:
+			#await get_tree().create_timer(0.25).timeout
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			OS.alert(\"You Died Bozo\")
+			get_tree().reload_current_scene()
+
+func headBob(time):
+	var pos = Vector3.ZERO
+	pos.x = cos(time*BOB_FREQ / 2) * BOB_AMP
+	pos.y = sin(time*BOB_FREQ) * BOB_AMP
+	return pos
+
+func toggle_camera():
+	var parent = \"Head\"
+	if first_person:
+		parent = \"SpringArm3D\"
+		model.visible = true
+	var child = camera
+	
+	child.get_parent().remove_child(child)
+	
+	get_node(parent).add_child(child)
+	
+	camera = child
+	
+	if not(first_person):
+		camera.position = camera_pos
+		model.visible = false
+	first_person = not(first_person)
+	
+func _ready():
+	model.visible = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		if first_person:
+			self.rotate_y(-event.relative.x*(camSense/10.0))
+			camera.rotate_x(-event.relative.y*(camSense/10.0))
+			camera.rotation.x=clamp(camera.rotation.x, deg_to_rad(-60),deg_to_rad(80))
+		else:
+			self.rotate_y(-event.relative.x*(camSense/10.0))
+			camera_arm.rotate_x(-event.relative.y*(camSense/10.0))
+			camera_arm.rotation.x=clamp(camera_arm.rotation.x, deg_to_rad(-74),deg_to_rad(74))
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qhadx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_utyvs"]
+height = 1.50071
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_q46a0"]
+height = 0.165107
+radius = 0.460937
+
+[node name="Robert" type="CharacterBody3D" groups=["Player"]]
+transform = Transform3D(-3, 0, -4.52987e-07, 0, 3, 0, 4.52987e-07, 0, -3, -15.7766, 76.9519, 39.1624)
+script = SubResource("GDScript_v1fa7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07543, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_qhadx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.681504, 0)
+shape = SubResource("CapsuleShape3D_utyvs")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.994522, 0.104528, 0, -0.104528, 0.994522, -3.81144e-08, 2.64317, 0.25242)
+spring_length = 6.0
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(0.999424, -0.0339401, -5.03633e-11, 0.0339401, 0.999424, 2.96714e-09, -5.03775e-11, -2.96714e-09, 1, 0, 1.15616, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 1.42109e-13, 1.94118e-23, 1, -2.22045e-16, -1.42109e-13, 0, 1, 0, 0, 0)
+
+[node name="gobot" parent="." instance=ExtResource("1_3mjd6")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="feet" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 4.26326e-14, 0, 1, 0, -4.26326e-14, 0, 1, 9.53674e-07, 0.285856, -1.91563)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="feet"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.76837e-07, -0.0994186, 1.90324)
+shape = SubResource("CylinderShape3D_q46a0")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bwrx3kesh5524"]
+
+[ext_resource type="Script" path="res://Node3D.gd" id="1_h58lp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_280l5"]
+size = Vector3(4.81097, 1, 0.440671)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0v6df"]
+albedo_color = Color(0, 0.309804, 0, 0.780392)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ul55o"]
+material = SubResource("StandardMaterial3D_0v6df")
+
+[node name="lapGoal" type="Area3D"]
+script = ExtResource("1_h58lp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_280l5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_ul55o")
+skeleton = NodePath("../CollisionShape3D")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

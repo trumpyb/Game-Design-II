@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://4s8d04sm2jbv"]
+
+[ext_resource type="Script" path="res://Hello.gd" id="1_ychq5"]
+
+[node name="Hello" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -2.0
+offset_right = -2.0
+script = ExtResource("1_ychq5")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 394.0
+offset_top = 66.0
+offset_right = 477.0
+offset_bottom = 442.0
+text = "Hello, world!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 284.0
+offset_top = 413.0
+offset_right = 396.0
+offset_bottom = 535.0
+text = "Show"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 467.0
+offset_top = 416.0
+offset_right = 571.0
+offset_bottom = 537.0
+text = "Clear"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]

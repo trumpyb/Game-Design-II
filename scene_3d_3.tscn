@@ -1,0 +1,89 @@
+[gd_scene load_steps=20 format=3 uid="uid://d3ahw5su6gtxr"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_r2jop"]
+[ext_resource type="Resource" path="res://terrain/terrain3ElectricBoogalee/data.hterrain" id="2_y7bu2"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_j35ma"]
+[ext_resource type="Texture2D" uid="uid://bb8ft2cp6pjsg" path="res://terrain/textures/Grass001_1K-JPG/Grass001_1K-JPG_Color.jpg" id="4_6bxxb"]
+[ext_resource type="Texture2D" uid="uid://bsj8qt46ey55i" path="res://terrain/textures/Snow010A_1K-JPG/Snow010A_1K-JPG_Color.jpg" id="5_ojkkq"]
+[ext_resource type="Texture2D" uid="uid://cs4go61h50pt7" path="res://terrain/textures/Bricks090_1K-JPG/Bricks090_1K-JPG_Color.jpg" id="6_1fqag"]
+[ext_resource type="Texture2D" uid="uid://demjcxcx1bolw" path="res://terrain/textures/Grass001_1K-JPG/Grass001_1K-JPG_NormalGL.jpg" id="7_j50q3"]
+[ext_resource type="Texture2D" uid="uid://bxie7s0ood6p5" path="res://terrain/textures/Snow010A_1K-JPG/Snow010A_1K-JPG_NormalGL.jpg" id="8_4jiup"]
+[ext_resource type="Texture2D" uid="uid://d12mogmvsvayj" path="res://terrain/textures/Bricks090_1K-JPG/Bricks090_1K-JPG_NormalGL.jpg" id="9_qeat5"]
+[ext_resource type="PackedScene" uid="uid://bytxhcxjbr03f" path="res://robert.tscn" id="10_nkegb"]
+[ext_resource type="PackedScene" uid="uid://dw35544virtex" path="res://robert_hud_3d.tscn" id="11_kiwmo"]
+[ext_resource type="PackedScene" uid="uid://l0wj5e7alp6f" path="res://robert_hater.tscn" id="11_sbemy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_inbwf"]
+sky_top_color = Color(0.247059, 0.423529, 0.815686, 1)
+sky_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+sky_energy_multiplier = 1.05
+ground_bottom_color = Color(0.105882, 0.203922, 0.0980392, 1)
+ground_horizon_color = Color(0.588235, 0.656863, 0.728431, 1)
+
+[sub_resource type="Sky" id="Sky_ss1tb"]
+sky_material = SubResource("ProceduralSkyMaterial_inbwf")
+
+[sub_resource type="Environment" id="Environment_j8fqa"]
+background_mode = 2
+sky = SubResource("Sky_ss1tb")
+tonemap_mode = 2
+
+[sub_resource type="Resource" id="Resource_34gxn"]
+script = ExtResource("3_j35ma")
+mode = 0
+textures = [[ExtResource("4_6bxxb"), ExtResource("5_ojkkq"), ExtResource("6_1fqag")], [ExtResource("7_j50q3"), ExtResource("8_4jiup"), ExtResource("9_qeat5")]]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a5chh"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wb4qv"]
+radius = 0.502944
+
+[sub_resource type="SphereMesh" id="SphereMesh_qays2"]
+
+[node name="scene_3d_3" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.952941, 0.756863, 0.113725, 1)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j8fqa")
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_r2jop")
+_terrain_data = ExtResource("2_y7bu2")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_34gxn")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
+[node name="Robert" parent="." instance=ExtResource("10_nkegb")]
+transform = Transform3D(-3, 0, -4.52987e-07, 0, 3, 0, 4.52987e-07, 0, -3, 174.231, -9.53674e-07, 133.245)
+
+[node name="RobertHud3D" parent="." instance=ExtResource("11_kiwmo")]
+
+[node name="Robert_Hater" parent="." instance=ExtResource("11_sbemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 176.58, 1.10724, 118.09)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 174.541, 8.58492, 138.715)
+physics_material_override = SubResource("PhysicsMaterial_a5chh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = SubResource("SphereShape3D_wb4qv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("SphereMesh_qays2")

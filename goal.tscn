@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://co5yi2jjfqjhc"]
+
+[ext_resource type="Script" path="res://Goal.gd" id="1_5p1lg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_igrn4"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_energy_multiplier = 1.1
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_hpdxv"]
+sky_material = SubResource("ProceduralSkyMaterial_igrn4")
+
+[sub_resource type="Environment" id="Environment_vje0t"]
+background_mode = 2
+sky = SubResource("Sky_hpdxv")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4r8n3"]
+transparency = 1
+albedo_color = Color(0.113725, 0.65098, 0.0705882, 0.478431)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8oyyq"]
+material = SubResource("StandardMaterial3D_4r8n3")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 20.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gqi4m"]
+height = 20.0
+radius = 1.0
+
+[node name="Goal" type="Area3D"]
+script = ExtResource("1_5p1lg")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vje0t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_8oyyq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_gqi4m")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
