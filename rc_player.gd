@@ -1,9 +1,10 @@
 extends VehicleBody3D
 
-@export var MAX_STEER = 0
-const MAX_RPM = 300
-const MAX_TORQUE = 200
-const HORSE_POWER = 200
+@export var MAX_STEER = .4
+@export var level = ""
+const MAX_RPM = 600
+const MAX_TORQUE = 400
+const HORSE_POWER = 400
 
 
 func _ready():
@@ -29,11 +30,10 @@ func _physics_process(delta):
 	$centerMass.global_position = $centerMass.global_position.lerp(self.global_position, delta * 20.0)
 	$centerMass.transform = $centerMass.transform.interpolate_with(self.transform, delta * 5.0)
 	$centerMass/Camera3D.look_at(self.global_position.lerp(self.global_position + self.linear_velocity, delta * 5.0))
-	
+
 func check_and_right_vehicle():
-	if self.global_transform.basis.y.dot(Vector3.UP) < 0:
-		var current_rotation = self.rotation_degrees
-		current_rotation.x = 0
-		current_rotation.z = 0
-		self.rotation_degrees = current_rotation
+	if Input.is_action_pressed("Restart"):
+		var lvl = "res://" + level + ".tscn"
+		get_tree().change_scene_to_file(lvl)
+
 

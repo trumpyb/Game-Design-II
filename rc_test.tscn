@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://yp3fwwic62p5"]
+
+[ext_resource type="PackedScene" uid="uid://dayy5gypihxsj" path="res://rc_player.tscn" id="1_ikumd"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6jttm"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_0vj13"]
+sky_material = SubResource("ProceduralSkyMaterial_6jttm")
+
+[sub_resource type="Environment" id="Environment_a4pmn"]
+background_mode = 2
+sky = SubResource("Sky_0vj13")
+tonemap_mode = 2
+
+[node name="rc_test" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_a4pmn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="race" parent="." instance=ExtResource("1_ikumd")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -2, 0, 1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(100000, 0, 0, 0, 1, 0, 0, 0, 1e+06, 0, -0.719924, 0)
+use_collision = true

@@ -29,9 +29,6 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 light_color = Color(0.952941, 0.756863, 0.113725, 1)
 shadow_enabled = true
 
-[node name="race" parent="." groups=["HUD", "Player"] instance=ExtResource("1_xmsod")]
-transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -165.847, 2.22103, 9.07008)
-
 [node name="GridMap" type="GridMap" parent="."]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0)
 mesh_library = ExtResource("2_vpnjj")
@@ -42,5 +39,11 @@ data = {
 }
 
 [node name="Goal" parent="." instance=ExtResource("3_3kpxk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -166.513, 9.81368, 31.1435)
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, -166.513, 9.81368, 31.1435)
 next_level = "rc_world_2"
+
+[node name="race" parent="." groups=["Player"] instance=ExtResource("1_xmsod")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -167, 3.90798, 10.092)
+can_sleep = false
+MAX_STEER = 0.2
+level = "rc_world"

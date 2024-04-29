@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=3 uid="uid://ccog2uqu0853j"]
+
+[ext_resource type="Script" path="res://particle_demo.gd" id="1_ko3vu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_05nmk"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_abe7h"]
+sky_material = SubResource("ProceduralSkyMaterial_05nmk")
+
+[sub_resource type="Environment" id="Environment_bnvyw"]
+background_mode = 2
+sky = SubResource("Sky_abe7h")
+tonemap_mode = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5arov"]
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(3, 0, 0)
+spread = 180.0
+initial_velocity_max = 1.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+gravity = Vector3(0, 9.8, 0)
+scale_min = 0.0
+scale_max = 1.5
+color = Color(0.708076, 0.355353, 0.0970421, 1)
+turbulence_enabled = true
+turbulence_noise_strength = 19.65
+turbulence_noise_scale = 10.0
+turbulence_noise_speed = Vector3(10, 10, 10)
+turbulence_noise_speed_random = 1.55
+turbulence_influence_min = 0.0
+turbulence_influence_max = 1.0
+turbulence_initial_displacement_min = 0.2
+turbulence_initial_displacement_max = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bjr4n"]
+transparency = 1
+blend_mode = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.883781, 0.571804, 0.170777, 1)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_088if"]
+material = SubResource("StandardMaterial3D_bjr4n")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pvuhx"]
+albedo_color = Color(0.288518, 0.288518, 0.288518, 1)
+
+[node name="Particle_Demo" type="Node3D"]
+script = ExtResource("1_ko3vu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bnvyw")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+amount = 500
+lifetime = 0.3
+randomness = 1.0
+local_coords = true
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_5arov")
+draw_pass_1 = SubResource("QuadMesh_088if")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.06718, 0)
+radius = 2.126
+height = 0.227
+material = SubResource("StandardMaterial3D_pvuhx")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0.224274, 2.31627, 3.80383)
