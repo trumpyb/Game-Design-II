@@ -45,5 +45,7 @@ next_level = "rc_world_2"
 [node name="race" parent="." groups=["Player"] instance=ExtResource("1_xmsod")]
 transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -167, 3.90798, 10.092)
 can_sleep = false
+engine_force = 1024.0
+steering = 1.01543
 MAX_STEER = 0.2
 level = "rc_world"

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpnla7ehpr7fo"]
+
+[ext_resource type="Script" path="res://MeshInstance3D.gd" id="1_css4g"]
+
+[node name="MarchingCubes" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+script = ExtResource("1_css4g")
