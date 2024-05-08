@@ -48,4 +48,3 @@ can_sleep = false
 engine_force = 1024.0
 steering = 1.01543
 MAX_STEER = 0.2
-level = "rc_world"
